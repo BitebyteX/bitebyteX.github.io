@@ -3,11 +3,11 @@
   <title>bitebyteX</title>
   
   <subtitle>bitebyte的学习笔记</subtitle>
-  <link href="https://bitebytex.github.io/atom.xml" rel="self"/>
+  <link href="http://example.com/atom.xml" rel="self"/>
   
-  <link href="https://bitebytex.github.io/"/>
+  <link href="http://example.com/"/>
   <updated>2022-11-24T07:35:23.283Z</updated>
-  <id>https://bitebytex.github.io/</id>
+  <id>http://example.com/</id>
   
   <author>
     <name>bitebyte-coudidi</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>Tiny Language</title>
-    <link href="https://bitebytex.github.io/2022/11/23/class1/"/>
-    <id>https://bitebytex.github.io/2022/11/23/class1/</id>
+    <link href="http://example.com/2022/11/23/class1/"/>
+    <id>http://example.com/2022/11/23/class1/</id>
     <published>2022-11-23T12:44:14.826Z</published>
     <updated>2022-11-24T07:35:23.283Z</updated>
     
@@ -38,8 +38,8 @@
   
   <entry>
     <title>test</title>
-    <link href="https://bitebytex.github.io/2022/11/23/test/"/>
-    <id>https://bitebytex.github.io/2022/11/23/test/</id>
+    <link href="http://example.com/2022/11/23/test/"/>
+    <id>http://example.com/2022/11/23/test/</id>
     <published>2022-11-23T12:42:37.000Z</published>
     <updated>2022-11-23T12:42:37.534Z</updated>
     
@@ -51,8 +51,8 @@
   
   <entry>
     <title>Hello World</title>
-    <link href="https://bitebytex.github.io/2022/11/23/hello-world/"/>
-    <id>https://bitebytex.github.io/2022/11/23/hello-world/</id>
+    <link href="http://example.com/2022/11/23/hello-world/"/>
+    <id>http://example.com/2022/11/23/hello-world/</id>
     <published>2022-11-23T09:24:13.408Z</published>
     <updated>2022-11-23T09:24:13.408Z</updated>
     
