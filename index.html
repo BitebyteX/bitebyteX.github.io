@@ -184,7 +184,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-12-05 16:08:28" itemprop="dateModified" datetime="2022-12-05T16:08:28+08:00">2022-12-05</time>
+                <time title="修改时间：2022-12-05 16:12:50" itemprop="dateModified" datetime="2022-12-05T16:12:50+08:00">2022-12-05</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -207,7 +207,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>第一节课的内容为tinylauage0、1、2的编译和解释实现，整个编译过程为Name&#x3D;&gt;Nameless&#x3D;&gt;StackVM，两层IR，Name和Nameless都使用了宿主语言的栈，StackVM则模拟cpu的执行。Name中含有对变量名寻址的过程，而Nameless将变量名去除，直接去栈中取值。也可将上述过程改为先编译去除使用宿主语言栈的过程，再编译去除变量名的寻址。<br><img src="/images/class1/class1.4.png"></p>
+          <p>第一节课的内容为tinylauage0、1、2的编译和解释实现，整个编译过程为Name&#x3D;&gt;Nameless&#x3D;&gt;StackVM，3层IR，Name和Nameless都使用了宿主语言的栈，StackVM则模拟cpu的执行。Name中含有对变量名寻址的过程，而Nameless将变量名去除，直接去栈中取值。也可将上述过程改为先编译去除使用宿主语言栈的过程，再编译去除变量名的寻址。<br><img src="/images/class1/class1.4.png"></p>
 <h2 id="Name2Nameless"><a href="#Name2Nameless" class="headerlink" title="Name2Nameless"></a>Name2Nameless</h2><p><strong>Name.expr:</strong></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">let rec eval = (expr, env) =&gt; &#123;</span><br><span class="line">    switch expr &#123;</span><br><span class="line">        | Cst(i) =&gt; i</span><br><span class="line">        | Add(a,b) =&gt; eval(a, env) + eval(b, env)</span><br><span class="line">        | Mul(a,b) =&gt; eval(a, env) * eval(b, env)</span><br><span class="line">        | Var(x) =&gt; List.assoc(x, env)</span><br><span class="line">        | Let(x, e1, e2) =&gt; eval(e2, list&#123;(x, eval(e1, env)), ...env&#125;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>其中由于x为变量名，则需要一个寻址的过程为Var(x)，因此将Name.expr编译成Nameless.expr，直接去栈中取值，即Var(int)</p>
