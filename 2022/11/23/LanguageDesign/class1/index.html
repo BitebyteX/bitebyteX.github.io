@@ -32,7 +32,7 @@
 <meta property="og:image" content="http://example.com/images/class1/class1.2.png">
 <meta property="og:image" content="http://example.com/images/class1/class1.3.png">
 <meta property="article:published_time" content="2022-11-23T12:44:14.826Z">
-<meta property="article:modified_time" content="2022-12-05T08:12:50.091Z">
+<meta property="article:modified_time" content="2022-12-05T08:14:16.393Z">
 <meta property="article:author" content="bitebyte-coudidi">
 <meta property="article:tag" content="Java|Go|ReScript|Python">
 <meta name="twitter:card" content="summary">
@@ -193,7 +193,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-12-05 16:12:50" itemprop="dateModified" datetime="2022-12-05T16:12:50+08:00">2022-12-05</time>
+                <time title="修改时间：2022-12-05 16:14:16" itemprop="dateModified" datetime="2022-12-05T16:14:16+08:00">2022-12-05</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -249,7 +249,7 @@
 <p><strong>sindex:</strong></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">type sv = Slocal | Stmp</span><br><span class="line">type senv = list&lt;sv&gt;</span><br><span class="line"></span><br><span class="line">let rec sindex = (senv, i): int =&gt; &#123;</span><br><span class="line">    switch senv &#123;</span><br><span class="line">    | list&#123;&#125; =&gt; assert false</span><br><span class="line">    | list&#123;Slocal, ...senv&#125; =&gt; </span><br><span class="line">        if i == 0&#123;</span><br><span class="line">                0</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            sindex(senv, i - 1) + 1</span><br><span class="line">        &#125;</span><br><span class="line">    | list&#123;Stmp, ...senv&#125; =&gt; sindex(senv, i) + 1</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><strong>Slocal</strong>代表了本地变量，<strong>Stmp</strong>代表临时变量。Add和Mul表达式都会产生临时变量，因此都需要重新计算索引, <strong>Let(a,b)</strong> 的a表达式则会产生本地变量存入栈中。</p>
-<h3 id="是否使用宿主语言的栈"><a href="#是否使用宿主语言的栈" class="headerlink" title="是否使用宿主语言的栈"></a>是否使用宿主语言的栈</h3><p>Nameless中(Name中同样也是)，**Add(a,b) &#x3D;&gt; eval(a, env) + eval(b, env)**，这样的执行过程中，’+’依然是使用了宿主语言的栈，并未存入临时变量供cpu进行操作，而是直接相加得到结果，Mul同样如此。</p>
+<h3 id="是否使用宿主语言的栈"><a href="#是否使用宿主语言的栈" class="headerlink" title="是否使用宿主语言的栈"></a>是否使用宿主语言的栈</h3><p>Nameless中(Name中同样也是)， <strong>Add(a,b) &#x3D;&gt; eval(a, env) + eval(b, env)</strong> ，这样的执行过程中，’+’依然是使用了宿主语言的栈，并未存入临时变量供cpu进行操作，而是直接相加得到结果，Mul同样如此。</p>
 <p><strong>StackVM.eval:</strong></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">let rec eval = (instrs : instrs, stk : stack) =&gt; &#123;</span><br><span class="line">    switch (instrs, stk) &#123;</span><br><span class="line">        | (list&#123;Cst(i), ...rest&#125;,_) =&gt; eval(rest, list&#123;i, ...stk&#125;)</span><br><span class="line">        | (list&#123;Add, ...rest&#125;, list&#123;a, b, ...stk&#125;) =&gt; eval(rest, list&#123;a + b, ...stk&#125;)</span><br><span class="line">        | (list&#123;Mul, ...rest&#125;, list&#123;a, b, ...stk&#125;) =&gt; eval(rest, list&#123;a * b, ...stk&#125;)</span><br><span class="line">        | (list&#123;Var(i), ...rest&#125;, _) =&gt; eval(rest, list&#123;List.nth(stk, i), ...stk&#125;)</span><br><span class="line">        | (list&#123;Pop, ...rest&#125;, list&#123;_, ...stk&#125;) =&gt; eval(rest, stk)</span><br><span class="line">        | (list&#123;Swap, ...rest&#125;, list&#123;a, b, ...stk&#125;) =&gt; eval(rest, list&#123;b, a, ...stk&#125;)</span><br><span class="line">        | (list&#123;&#125;, list&#123;a, ..._stk&#125;) =&gt; a</span><br><span class="line">        | _ =&gt; assert false</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>StackVM中，将每一步计算编译成对应的指令集，将临时变量压入栈中再进行计算Add指令的计算，模拟cpu的执行过程。然而，**(list{Add, …rest}, list{a, b, …stk}) &#x3D;&gt; eval(rest, list{a + b, …stk})** 这样的执行过程中过程，a + b依然使用了宿主语言的栈，所以StackVM只是模拟了cpu的执行，实质上还是使用了宿主语言的的栈。</p>
